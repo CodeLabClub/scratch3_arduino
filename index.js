@@ -27,7 +27,7 @@ class ArduinoBlocks {
         const url = new URL(window.location.href);
         var adapterHost = url.searchParams.get('adapter_host'); // 支持树莓派(分布式使用)
         if (!adapterHost) {
-            var adapterHost = 'scratch3-adapter.just4fun.site';
+            var adapterHost = "codelab-adapter.codelab.club";
         }
 
         this.socket = io(`//${adapterHost}:12358` + '/test', {
@@ -37,7 +37,7 @@ class ArduinoBlocks {
             console.log(msg.data);
             this.data = msg.data;
             const topic = this.data.topic;
-            const message = this.data.message;
+            const message = this.data.payload;
 
             // 任何消息都进入
             this.message = message; // 可能被清空
@@ -104,8 +104,8 @@ class ArduinoBlocks {
      */
 
     setLed (args) {
-        const message = `ser.write(bytearray([0xff,0xaa,0x9,0x0,0x2,0x8,0x7,0x2,${args.index},${args.red},${args.green},${args.blue}]))`;
-        this.socket.emit('actuator', {topic: TOPIC, data: message});
+        const payload = `ser.write(bytearray([0xff,0xaa,0x9,0x0,0x2,0x8,0x7,0x2,${args.index},${args.red},${args.green},${args.blue}]))`;
+        this.socket.emit('actuator', {topic: TOPIC, payload: payload});
         return;
     }
 }
